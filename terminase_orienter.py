@@ -23,8 +23,6 @@ record = SeqIO.read(args.infile, "fasta")
 # get length of the fasta
 len = len(record.seq)
 
-print(record.seq )
-
 # positive it's easy
 
 # reorient to start at the terminase  
@@ -47,8 +45,6 @@ if args.strand == "neg":
 
 
 record.seq = total
-
-print(record.seq )
 
 SeqIO.write(record, args.outfile, "fasta")
 	
