@@ -33,7 +33,11 @@ gff_df = pd.read_csv(args.infile, delimiter= '\t', index_col=False, header=None,
 
 strand = args.strand
 # add one
-terminase = int(args.terminase) + 1
+if strand == "neg":
+    terminase = int(args.terminase) + 1
+if strand == "pos":
+    terminase = int(args.terminase) - 1
+
 
 # cut seqeunce
 gff_df['start2'] = np.where(gff_df['start'] > terminase, gff_df['start'] - terminase, gff_df['start']+len -terminase)
