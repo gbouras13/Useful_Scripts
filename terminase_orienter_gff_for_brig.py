@@ -30,6 +30,8 @@ len = len(record.seq)
 colnames=['contig', 'program', 'type', 'start', 'end', 'score', 'strand', 'n', 'description'] 
 gff_df = pd.read_csv(args.infile, delimiter= '\t', index_col=False, header=None, names=colnames)
 
+# remove hypothetical protein 
+gff_df['description'] = gff_df['description'].str.replace('hypothetical protein', '', regex=True)
 
 strand = args.strand
 # add one
