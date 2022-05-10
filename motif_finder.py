@@ -18,7 +18,7 @@ def get_input():
 
 args = get_input()
 
-record = SeqIO.read(args.infile, "fasta")
+#record = SeqIO.read(args.infile, "fasta")
 motif = args.motif
 
 
@@ -29,4 +29,4 @@ reads = list(SeqIO.parse(args.infile, "fasta"))
 
 for i in range(len(reads)):
     for pos, seq in m.instances.search(reads[i].seq):
-        print("%i %s" % (pos, seq))
+        print("%i %i %s" % ((i+1), pos, seq))
