@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 from argparse import RawTextHelpFormatter
 from Bio import SeqIO
@@ -10,7 +11,7 @@ def get_input():
     parser = argparse.ArgumentParser(description='script to orient phage genome to begin with large terminase subunit', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-i', '--infile', action="store", help='input file in gff format',  required=True)
     parser.add_argument('-s', '--strand', action="store", help='strandedness of terminase - pos or neg',  required=True)
-    parser.add_argument('-t', '--terminase', action="store", help='terminase coordinate',  required=True)
+    parser.add_argument('-t', '--terminase', action="store", help='terminase coordinate needs to be one before the start',  required=True)
     parser.add_argument('-p', '--prefix', action="store", help='output files prefix',  required=True) 
     parser.add_argument('-f', '--fasta', action="store", help='input fasta file',  required=True)
     parser.add_argument('-o', '--outdir', action="store", help='output directory',  required=True )
