@@ -32,5 +32,5 @@ except pd.errors.EmptyDataError:
 with open(args.outfile, 'w') as aa_fa:
     for index, row in gene_data_df.iterrows():
         sequence = Seq(row["prot_sequence"])
-        aa_record = SeqRecord(seq=sequence, id=str(row["gff_file"])+str(row["annotation_id"]), description="")
+        aa_record = SeqRecord(seq=sequence, id=str(row["gff_file"])+","+str(row["annotation_id"]), description="")
         SeqIO.write(aa_record, aa_fa, 'fasta')
