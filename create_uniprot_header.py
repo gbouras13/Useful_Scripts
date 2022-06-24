@@ -11,6 +11,7 @@ def get_input():
     parser.add_argument('-i', '--infile', action="store", help='input file in fasta format',  required=True)
     parser.add_argument('-o', '--outfile', action="store", help='outfile file in fasta format',  required=True)
     parser.add_argument('-c', '--csv', action="store", help='gene_presence.csv from roary',  required=True)
+    parser.add_argument('-p', '--program', action="store", help='program used to create the pangenome: roary or panaroo',  required=True, default='roary')
     args = parser.parse_args()
     return args
 
@@ -30,29 +31,57 @@ for row in reader:
     result[key] = row[2]
 #print(result)
 
+
+# roary 
+
 # open fasta
 
-with open(args.outfile, 'w') as dna_fa:
-    for dna_record in SeqIO.parse(args.infile, "fasta"):
-        # split the list
-        spl_list = dna_record.description.split(" ")
-        #print(dna_record.description)
-        # get first item (locustag)
-        locus = spl_list[0]
-        # get second item gene name
-        identifier = spl_list[1]
-        
-        # get description from gene_presence.csv dictionary
-        description = result[identifier]
-        
-        id_uniprot = "ro|"+identifier + "|" + locus + " " + description + " OS=Staphylococcus aureus OX=1280 PE=4 SV=1"
+if args.program == 'roary':
+    with open(args.outfile, 'w') as dna_fa:
+        for dna_record in SeqIO.parse(args.infile, "fasta"):
+            # split the list
+            spl_list = dna_record.description.split(" ")
+            #print(dna_record.description)
+            # get first item (locustag)
+            locus = spl_list[0]
+            # get second item gene name
+            identifier = spl_list[1]
+            
+            # get description from gene_presence.csv dictionary
+            description = result[identifier]
+            
+            id_uniprot = "ro|"+identifier + "|" + locus + " " + description + " OS=Staphylococcus aureus OX=1280 PE=4 SV=1"
 
-        # translate 
-        s = dna_record.seq
-        aa_seq = s[0:].translate(to_stop=True) 
+            # translate 
+            s = dna_record.seq
+            aa_seq = s[0:].translate(to_stop=True) 
 
-        # write new record no description
-        dna_record_uniprot = SeqRecord(aa_seq, id=id_uniprot, description="")
-        SeqIO.write(dna_record_uniprot, dna_fa, 'fasta')
+            # write new record no description
+            dna_record_uniprot = SeqRecord(aa_seq, id=id_uniprot, description="")
+            SeqIO.write(dna_record_uniprot, dna_fa, 'fasta')
+if args.program == 'panaroo':
+    with open(args.outfile, 'w') as dna_fa:
+        for dna_record in SeqIO.parse(args.infile, "fasta"):
+            # split the list
+            spl_list = dna_record.description.split(" ")
+            #print(dna_record.description)
+            # get  gene name
+            identifier = spl_list[0]
+
+            # no locus tag for panaroo pangenome
+            
+            # get description from gene_presence.csv dictionary
+            description = result[identifier]
+            
+            id_uniprot = "ro|"+identifier + "|"  + description + " OS=Staphylococcus aureus OX=1280 PE=4 SV=1"
+
+            # translate 
+            s = dna_record.seq
+            aa_seq = s[0:].translate(to_stop=True) 
+
+            # write new record no description
+            dna_record_uniprot = SeqRecord(aa_seq, id=id_uniprot, description="")
+            SeqIO.write(dna_record_uniprot, dna_fa, 'fasta')
+
         
 print("uniprot headers created")
