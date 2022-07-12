@@ -6,10 +6,8 @@ for dir in *barcode*
 
 do
 
-cd $dir
-cat *.fastq.gz > ${dir}.fastq.gz
-cp  ${dir}.fastq.gz ../../aggregated_fastqs
-cd ..
+cat $dir/*.fastq.gz > ../aggregated_fastqs/${dir}.fastq.gz
+
 done
 
 ### if error run again
