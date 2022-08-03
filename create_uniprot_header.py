@@ -11,6 +11,8 @@ def get_input():
     parser.add_argument('-i', '--infile', action="store", help='input file in fasta format',  required=True)
     parser.add_argument('-o', '--outfile', action="store", help='outfile file in fasta format',  required=True)
     parser.add_argument('-c', '--csv', action="store", help='gene_presence.csv from roary',  required=True)
+    parser.add_argument('-s', '--species', action="store", help='species of pangenome e.g. "Staphylococcus aureus" needs quotes for the space ',  required=True)
+    parser.add_argument('-t', '--taxid', action="store", help='taxid of pangenome e.g. "1280" ',  required=True)
     parser.add_argument('-p', '--program', action="store", help='program used to create the pangenome: roary or panaroo',  required=True, default='roary')
     args = parser.parse_args()
     return args
@@ -50,7 +52,7 @@ if args.program == 'roary':
             # get description from gene_presence.csv dictionary
             description = result[identifier]
             
-            id_uniprot = "ro|"+identifier + "|" + locus + " " + description + " OS=Staphylococcus aureus OX=1280 PE=4 SV=1"
+            id_uniprot = "ro|"+identifier + "|" + locus + " " + description + " OS=" + args.species + " OX=" + args.taxid + " PE=4 SV=1"
 
             # translate 
             s = dna_record.seq
@@ -73,7 +75,7 @@ if args.program == 'panaroo':
             # get description from gene_presence.csv dictionary
             description = result[identifier]
             
-            id_uniprot = "ro|"+identifier + "|"  + description + " OS=Staphylococcus aureus OX=1280 PE=4 SV=1"
+            id_uniprot = "ro|"+identifier + "|"  + description + " OS=" + args.species + " OX=" + args.taxid + " PE=4 SV=1"
 
             # translate 
             s = dna_record.seq
