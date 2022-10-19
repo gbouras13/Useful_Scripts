@@ -42,8 +42,6 @@ if args.strand == "neg":
 	total = start + end
 
 
-
-
 record.seq = total
 
 SeqIO.write(record, args.outfile, "fasta")
