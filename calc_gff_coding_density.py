@@ -11,8 +11,8 @@ from BCBio import GFF
 
 
 def get_input():
-	parser = argparse.ArgumentParser(description='calculate coding density from gbk')
-	parser.add_argument('-i', '--infile', action="store", help='Input genome file in genbank format.',  required=True)
+	parser = argparse.ArgumentParser(description='calculate coding density from gff')
+	parser.add_argument('-i', '--infile', action="store", help='Input genome file in gff  format.',  required=True)
 	parser.add_argument('-o', '--outfile', action="store", help='file to write the output to .', required=True )
 
 	args = parser.parse_args()
