@@ -17,7 +17,8 @@ args = get_input()
 
 with open(args.outfile, 'w') as aa_fa:
     for dna_record in SeqIO.parse(args.infile, "fasta"):
-        # use both fwd and rev sequences
+        #print(dna_record.id)
+	# use both fwd and rev sequences
         dna_seqs = [dna_record.seq, dna_record.seq.reverse_complement()]
 
         # generate all translation frames
