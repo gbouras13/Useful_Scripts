@@ -31,8 +31,6 @@ if args.strand == "pos":
 	end = record.seq[0:int(args.terminase)-1]
 	total = start + end
 
-
-
 # revese compliment if the strand is negative
 
 if args.strand == "neg":
