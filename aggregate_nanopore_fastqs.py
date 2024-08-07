@@ -17,7 +17,7 @@ If you have samples with multiple runs, the code will detect and append to the s
 
 def get_input():
 	usage = 'python3 aggregate_nanopore_fastqs.py ...'
-	parser = argparse.ArgumentParser(description='script to aggreagted nanopore FASTQs and label with sample name', formatter_class=RawTextHelpFormatter)
+	parser = argparse.ArgumentParser(description='script to aggreagted nanopore FASTQs and label with sample name. Will append already existing files, so be careful!', formatter_class=RawTextHelpFormatter)
 	parser.add_argument('-i', '--infile', action="store", help='input csv file in csv format. 2 columns. Needs 2 columns: Sample and Barcode',  required=True)
 	parser.add_argument('-d', '--directory', action="store", help='fastq_pass directory path',  required=True)
 	parser.add_argument('-o', '--output', action="store", help='output directory where the aggregated FASTQs will be saved',  required=True)
