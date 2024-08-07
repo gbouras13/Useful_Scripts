@@ -18,7 +18,7 @@ If you have samples with multiple runs, the code will detect and append to the s
 def get_input():
 	usage = 'python3 aggregate_nanopore_fastqs.py ...'
 	parser = argparse.ArgumentParser(description='script to aggreagted nanopore FASTQs and label with sample name. Will append already existing files, so be careful!', formatter_class=RawTextHelpFormatter)
-	parser.add_argument('-i', '--infile', action="store", help='input csv file in csv format. 2 columns. Needs 2 columns: Sample and Barcode',  required=True)
+	parser.add_argument('-i', '--infile', action="store", help='input csv file in csv format. 2 columns with sample names an barcode (integers). Needs 2 columns: Sample and Barcode. Example Sample,Barcode\nsample,01 ',  required=True)
 	parser.add_argument('-d', '--directory', action="store", help='fastq_pass directory path',  required=True)
 	parser.add_argument('-o', '--output', action="store", help='output directory where the aggregated FASTQs will be saved',  required=True)
 	args = parser.parse_args()
@@ -48,8 +48,17 @@ for sample_id, barcode in data_dict.items():
     output_file = os.path.join(output_dir, f'{sample_id}.fastq.gz')
 
     # Find and concatenate the corresponding .fastq.gz files
-    barcode_path = os.path.join(fastq_path, barcode)
-    fastq_files = [f for f in os.listdir(barcode_path) if f.endswith('.fastq.gz')]
+    #barcode_path = os.path.join(fastq_path, barcode)
+    fastq_files = [f for f in os.listdir(fastq_path) if f.endswith('.fastq.gz')]
+	
+# Find the fastq file that contains the barcode - this will also handle instances where Dorado rebasecalling has happened
+    barcode_file = next((f for f in fastq_files if barcode in f), None)
+
+# If a matching file is found, construct the full path
+    if barcode_file:
+        barcode_path = os.path.join(fastq_path, barcode_file)
+    else:
+        raise FileNotFoundError(f"No fastq file containing the barcode '{barcode}' found in {fastq_path}")
 
     # Check if the output file already exists
     if os.path.exists(output_file):
