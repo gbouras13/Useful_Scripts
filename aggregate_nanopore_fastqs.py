@@ -34,6 +34,9 @@ output_dir = args.output
 fastq_path = args.directory
 data_dict = {}
 
+if os.path.isdir(output_dir) == False:
+    os.mkdir(output_dir)
+
 with open(csv_file, mode='r', encoding='utf-8-sig') as file:
     csv_reader = csv.DictReader(file)
     for row in csv_reader:
@@ -45,15 +48,16 @@ with open(csv_file, mode='r', encoding='utf-8-sig') as file:
 
 # loop over the dictionary
 for sample_id, barcode in data_dict.items():
+
+    print(f"aggregating {barcode} as sample {sample_id}")
     # Create the output file path
     output_file = os.path.join(output_dir, f'{sample_id}.fastq.gz')
 
     if args.dorado is True:
-
         # Find and concatenate the corresponding .fastq.gz files
         fastq_files = [f for f in os.listdir(fastq_path) if f.endswith('.fastq.gz') and barcode in f]
         if len(fastq_files) == 0:
-            raise FileNotFoundError(f"No fastq file containing the barcode '{barcode}' found in {fastq_path}")
+            raise FileNotFoundError(f"No fastq file containing the barcode {barcode} found in {fastq_path}")
         else:
             barcode_path = fastq_path
             for f in fastq_files:
